@@ -1,8 +1,7 @@
 package dk.kea.webshop.Repository;
 
-import dk.kea.webshop.Model.Product;
+import dk.kea.webshop.Model.Products;
 
-import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,8 @@ public class ProductRepository {
     private final static String UID = "root";
     private final String PWD = "Dickduck1";
 
-    public List<Product> getAll(){
-        List<Product> productList = new ArrayList<>();
+    public List<Products> getAll(){
+        List<Products> productList = new ArrayList<>();
         try {
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             Statement statement = connection.createStatement();
@@ -25,7 +24,7 @@ public class ProductRepository {
                 int id = resultSet.getInt(1);
                 String name = resultSet.getString(2);
                 double price = resultSet.getDouble(3);
-                Product product = new Product(id, name, price);
+                Products product = new Products(id, name, price);
                 productList.add(product);
                 System.out.println(product);
             }
