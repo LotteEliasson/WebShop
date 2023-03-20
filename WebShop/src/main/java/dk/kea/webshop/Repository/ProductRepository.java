@@ -1,20 +1,22 @@
 package dk.kea.webshop.Repository;
 
-import dk.kea.webshop.Model.Products;
+import dk.kea.webshop.Model.Product;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ProductRepository {
 
     //Database-properties
-    private final static String DB_URL ="jdbc:mysql://localhost:3306/webshop";
-    private final static String UID = "root";
-    private final String PWD = "Dickduck1";
+    private final static String DB_URL ="jdbc:mysql://lfenew.mysql.database.azure.com:3306/webshop";
+    private final static String UID = "lfe";
+    private final String PWD = "Skolekode1";
 
-    public List<Products> getAll(){
-        List<Products> productList = new ArrayList<>();
+    public List<Product> getAll(){
+        List<Product> productList = new ArrayList<>();
         try {
             Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
             Statement statement = connection.createStatement();
@@ -24,7 +26,7 @@ public class ProductRepository {
                 int id = resultSet.getInt(1);
                 String name = resultSet.getString(2);
                 double price = resultSet.getDouble(3);
-                Products product = new Products(id, name, price);
+                Product product = new Product(id, name, price);
                 productList.add(product);
                 System.out.println(product);
             }
