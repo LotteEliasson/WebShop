@@ -40,4 +40,24 @@ public class ProductRepository {
         return productList;
     }
 
+    public void addProduct(Product product){
+        try{
+            //connect to db
+            Connection connection = DriverManager.getConnection(DB_URL,UID,PWD);
+            final String CREATE_QUERY = "INSERT INTO products(id,name, price) VALUES(?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(CREATE_QUERY);
+
+            //set attributer i prepared statement
+            preparedStatement.setInt(1, product.getId());
+            preparedStatement.setString(2, product.getName());
+            preparedStatement.setDouble(3, product.getPrice());
+
+            //execute statement
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            System.out.println("Could not create product");
+            e.printStackTrace();
+        }
+
+    }
 }
