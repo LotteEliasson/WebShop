@@ -8,13 +8,17 @@
 <div class="container">
   <h1>Produktliste</h1>
   <table>
+
     <thead>
     <th>ID</th>
     <th>Produktnavn</th>
     <th>Pris</th>
+    <th>Update</th>
     </thead>
+
     <tbody>
     <tr th:each="product : ${products}">
+
       <td th:text="${product.id}">
         42
       </td>
@@ -23,6 +27,11 @@
       </td>
       <td th:text="${product.price}">
         666
+      </td>
+      </td>
+
+      <td>
+        <a th:href="@{'/update/' + ${product.id}}">Update Product</a>
       </td>
     </tr>
     </tbody>

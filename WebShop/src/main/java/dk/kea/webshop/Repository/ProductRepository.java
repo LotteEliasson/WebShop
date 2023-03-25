@@ -58,6 +58,67 @@ public class ProductRepository {
             System.out.println("Could not create product");
             e.printStackTrace();
         }
-
     }
+
+    public void updateProduct(Product product) {
+        //SQL statement
+        final String UPDATE_QUERY = "UPDATE products SET name = ?, price = ? WHERE id=?";
+
+        try {
+            //connect db
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+            //prepared statement
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+            //set parameter
+            String name = product.getName();
+            double price = product.getPrice();
+            int id = product.getId();
+            preparedStatement.setString(1,name);
+            preparedStatement.setDouble(2, price);
+            preparedStatement.setInt(3,id);
+
+            //execute statement
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException e){
+            System.out.println("Could not update product");
+            e.printStackTrace();
+        }
+    }
+
+    public Product findProductById(int id) {
+        //SQL-statement
+        final String FIND_QUERY = "SELECT * products WHERE id = ?";
+        Product product = new Product();
+        product.setId(id);
+
+        try {
+            //DB connection
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+
+            //Prepared statement
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_QUERY);
+
+            //Set parameters
+            preparedStatement.setInt(1, id);
+
+            //Execute statement
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            //Få produkt ud af resultset
+            resultSet.next();
+            String name = resultSet.getString(2);
+            double price = resultSet.getDouble(3);
+            product.setName(name);
+            product.setPrice(price);
+
+        }catch (SQLException e){
+            System.out.println("Could not find product");
+            e.printStackTrace();
+        }
+        //return product
+        return product;
+    }
+
+
 }
