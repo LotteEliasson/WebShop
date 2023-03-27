@@ -69,4 +69,13 @@ public class HomeController
         return "redirect:/";
     }
 
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") int id){
+        //slet fra repository
+        productRepository.deleteById(id);
+
+        //returner til index-siden
+        return "redirect:/";
+    }
+
 }

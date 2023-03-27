@@ -1,6 +1,7 @@
 package dk.kea.webshop.Repository;
 
 import dk.kea.webshop.Model.Product;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -11,9 +12,19 @@ import java.util.List;
 public class ProductRepository {
 
     //Database-properties
-    private final static String DB_URL ="jdbc:mysql://lfenew.mysql.database.azure.com:3306/webshop";
-    private final static String UID = "lfe";
-    private final String PWD = "Skolekode1";
+    //private final static String DB_URL ="jdbc:mysql://lfenew.mysql.database.azure.com:3306/webshop";
+    //private final static String UID = "lfe";
+    //private final String PWD = "Skolekode1";
+    @Value("${spring.datasource.url}")
+    private String DB_URL;
+
+    @Value("${spring.datasource.username}")
+    private String UID;
+
+    @Value("${spring.datasource.password}")
+    private String PWD;
+
+
 
     public List<Product> getAll(){
         List<Product> productList = new ArrayList<>();
@@ -88,7 +99,7 @@ public class ProductRepository {
 
     public Product findProductById(int id) {
         //SQL-statement
-        final String FIND_QUERY = "SELECT * products WHERE id = ?";
+        final String FIND_QUERY = "SELECT * FROM products WHERE id = ?";
         Product product = new Product();
         product.setId(id);
 
@@ -118,6 +129,30 @@ public class ProductRepository {
         }
         //return product
         return product;
+    }
+
+    public void deleteById(int id){
+        //SQL-query
+        final String DELETE_QUERY = "DELETE FROM products WHERE id=?";
+
+        try{
+            //Connect til db
+            Connection connection = DriverManager.getConnection(DB_URL, UID, PWD);
+
+            //Create statement
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
+
+            //set parameter
+            preparedStatement.setInt(1,id);
+
+            //execute statement
+            preparedStatement.executeUpdate();
+
+        }catch(SQLException e){
+            System.out.println("Could not delete product");
+            e.printStackTrace();
+        }
+
     }
 
 
